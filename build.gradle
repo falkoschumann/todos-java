@@ -1,0 +1,26 @@
+plugins {
+  id 'java'
+  id 'application'
+  id 'com.diffplug.spotless' version '6.11.0'
+}
+
+repositories {
+  mavenCentral()
+}
+
+mainClassName = 'de.muspellheim.todos.Main'
+
+dependencies {
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+}
+
+test {
+  useJUnitPlatform()
+}
+
+spotless {
+  java {
+    googleJavaFormat()
+  }
+}
