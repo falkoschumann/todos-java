@@ -1,7 +1,6 @@
 package de.muspellheim.todos.application;
 
 import de.muspellheim.todos.domain.*;
-import java.util.*;
 
 public class TodosController {
   private final TodosService model;
@@ -10,6 +9,8 @@ public class TodosController {
   public TodosController(TodosService model, TodosView view) {
     this.model = model;
     this.view = view;
+
+    view.addNewTodoListener(e -> createTodo(e.title()));
   }
 
   public void run() {
@@ -19,12 +20,13 @@ public class TodosController {
 
   private void load() {
     var todos = model.selectTodos();
-    updateView(todos);
-  }
-
-  private void updateView(List<Todo> todos) {
     view.setTodos(todos);
     long count = todos.stream().filter(t -> !t.completed()).count();
     view.setCounter(String.format("%1$d %2$s left", count, count == 1 ? "item" : "item" + 's'));
+  }
+
+  private void createTodo(String title) {
+    model.addTodo(title);
+    load();
   }
 }

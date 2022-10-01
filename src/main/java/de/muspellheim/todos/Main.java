@@ -10,7 +10,7 @@ public class Main {
   public static void main(String[] args) {
     var todos = new MemoryTodos();
     todos.store(List.of(new Todo(1, "Taste JavaScript", true), new Todo(2, "Buy Unicorn", false)));
-    var model = new TodosServiceImpl(todos);
+    var model = new TodosService(todos);
     SwingUtilities.invokeLater(
         () -> {
           var view = new SwingTodosView();

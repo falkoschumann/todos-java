@@ -5,8 +5,10 @@ import java.awt.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.*;
 
 public class SwingTodosView extends JFrame implements TodosView {
+  private final EventListenerList eventListenerList = new EventListenerList();
   private final JComponent todoList;
   private final JLabel counter;
 
@@ -46,5 +48,10 @@ public class SwingTodosView extends JFrame implements TodosView {
   @Override
   public void setCounter(String counter) {
     this.counter.setText(counter);
+  }
+
+  @Override
+  public void addNewTodoListener(NewTodoListener listener) {
+    eventListenerList.add(NewTodoListener.class, listener);
   }
 }

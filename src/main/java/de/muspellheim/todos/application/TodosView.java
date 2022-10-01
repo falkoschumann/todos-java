@@ -9,4 +9,12 @@ public interface TodosView {
   void setTodos(List<Todo> todos);
 
   void setCounter(String counter);
+
+  void addNewTodoListener(NewTodoListener listener);
+
+  interface NewTodoListener extends EventListener {
+    void accept(NewTodoEvent event);
+  }
+
+  record NewTodoEvent(String title) {}
 }
