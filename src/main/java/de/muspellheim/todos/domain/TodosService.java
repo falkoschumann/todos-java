@@ -18,7 +18,7 @@ public class TodosService {
   private static List<Todo> doAddTodos(List<Todo> todos, String title) {
     var lastId = todos.stream().mapToInt(Todo::id).max().orElse(0);
     todos = new ArrayList<>(todos);
-    todos.add(new Todo(lastId + 1, title, false));
+    todos.add(new Todo(lastId + 1, title.trim(), false));
     return todos;
   }
 

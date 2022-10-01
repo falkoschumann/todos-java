@@ -43,4 +43,14 @@ public class AcceptanceTests {
         sut.getTodos());
     assertEquals("2 items left", sut.getCounter());
   }
+
+  @Test
+  void newTodoIsBlank_TodoIsNotAdded() {
+    sut.createTodo("Taste JavaScript");
+
+    sut.createTodo("  ");
+
+    assertEquals(List.of(new Todo(1, "Taste JavaScript", false)), sut.getTodos());
+    assertEquals("1 item left", sut.getCounter());
+  }
 }

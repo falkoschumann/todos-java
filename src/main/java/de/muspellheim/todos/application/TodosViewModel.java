@@ -30,6 +30,10 @@ public class TodosViewModel {
   }
 
   public void createTodo(String title) {
+    if (title.isBlank()) {
+      return;
+    }
+
     model.addTodo(title);
     update();
   }

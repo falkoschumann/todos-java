@@ -6,6 +6,7 @@ import javax.swing.border.*;
 
 public class TodosView extends JFrame {
   private final TodosViewModel viewModel;
+  private final JTextField newTodo;
   private final JComponent todoList;
   private final JLabel counter;
 
@@ -19,6 +20,12 @@ public class TodosView extends JFrame {
 
     var contentPane = new JPanel(new BorderLayout());
     add(contentPane);
+
+    newTodo = new JTextField();
+    newTodo.setToolTipText("What needs to be done?");
+    newTodo.requestFocusInWindow();
+    newTodo.addActionListener(e -> handleNewTodo(viewModel));
+    contentPane.add(newTodo, BorderLayout.NORTH);
 
     todoList = Box.createVerticalBox();
     todoList.setBackground(Color.WHITE);
@@ -34,6 +41,12 @@ public class TodosView extends JFrame {
 
   public void run() {
     setVisible(true);
+    load();
+  }
+
+  private void handleNewTodo(TodosViewModel viewModel) {
+    viewModel.createTodo(newTodo.getText());
+    newTodo.setText("");
     load();
   }
 

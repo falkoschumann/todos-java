@@ -7,9 +7,9 @@ of [TodoMVC](https://todomvc.com).
 
 ### Create Todo
 
-- [ ] Focus new todo text field on startup.
+- [x] Focus new todo text field on startup.
 - [ ] If there are no todos, only display text field for new todo.
-- [ ] Remove spaces before and after text and only create todo if text is not
+- [x] Remove spaces before and after text and only create todo if text is not
   empty.
 
 ### Show Todos
