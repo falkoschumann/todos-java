@@ -6,6 +6,7 @@ import java.util.*;
 public class TodosViewSpy implements TodosView {
   private int callCountShow;
   private List<Todo> lastTodos;
+  private String lastCounter;
 
   @Override
   public void show() {
@@ -21,7 +22,16 @@ public class TodosViewSpy implements TodosView {
     lastTodos = todos;
   }
 
+  @Override
+  public void setCounter(String counter) {
+    lastCounter = counter;
+  }
+
   public List<Todo> getLastTodos() {
     return lastTodos;
+  }
+
+  public String getLastCounter() {
+    return lastCounter;
   }
 }

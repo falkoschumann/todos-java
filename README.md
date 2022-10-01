@@ -16,7 +16,7 @@ of [TodoMVC](https://todomvc.com).
 
 - [x] Show all todos.
 - [ ] Show only active or completed todos.
-- [ ] Display number of active todos.
+- [x] Display number of active todos.
 
 ### Edit Todo
 

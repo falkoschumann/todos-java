@@ -3,9 +3,15 @@ package de.muspellheim.todos.application;
 import de.muspellheim.todos.domain.*;
 import java.util.*;
 
-public class TodosServiceStub implements TodosService {
+class TodosServiceStub implements TodosService {
+  private List<Todo> todos;
+
+  void setTodos(List<Todo> todos) {
+    this.todos = todos;
+  }
+
   @Override
   public List<Todo> selectTodos() {
-    return List.of(new Todo(1, "Taste JavaScript", true), new Todo(2, "Buy Unicorn", false));
+    return todos;
   }
 }
