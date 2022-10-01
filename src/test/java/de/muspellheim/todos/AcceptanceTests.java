@@ -20,6 +20,7 @@ public class AcceptanceTests {
 
   @Test
   void run_ShowViewWithZeroTodos() {
+    assertFalse(sut.hasTodos());
     assertEquals(List.of(), sut.getTodos());
     assertEquals("0 items left", sut.getCounter());
   }
@@ -28,6 +29,7 @@ public class AcceptanceTests {
   void newTodo_AddFirstTodo() {
     sut.createTodo("Taste JavaScript");
 
+    assertTrue(sut.hasTodos());
     assertEquals(List.of(new Todo(1, "Taste JavaScript", false)), sut.getTodos());
     assertEquals("1 item left", sut.getCounter());
   }
@@ -38,6 +40,7 @@ public class AcceptanceTests {
 
     sut.createTodo("Buy unicorn");
 
+    assertTrue(sut.hasTodos());
     assertEquals(
         List.of(new Todo(1, "Taste JavaScript", false), new Todo(2, "Buy unicorn", false)),
         sut.getTodos());
@@ -50,6 +53,7 @@ public class AcceptanceTests {
 
     sut.createTodo("  ");
 
+    assertTrue(sut.hasTodos());
     assertEquals(List.of(new Todo(1, "Taste JavaScript", false)), sut.getTodos());
     assertEquals("1 item left", sut.getCounter());
   }

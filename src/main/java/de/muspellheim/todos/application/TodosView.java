@@ -7,6 +7,7 @@ import javax.swing.border.*;
 public class TodosView extends JFrame {
   private final TodosViewModel viewModel;
   private final JTextField newTodo;
+  private final JScrollPane todoListScroll;
   private final JComponent todoList;
   private final JLabel counter;
 
@@ -29,7 +30,7 @@ public class TodosView extends JFrame {
 
     todoList = Box.createVerticalBox();
     todoList.setBackground(Color.WHITE);
-    var todoListScroll = new JScrollPane(todoList);
+    todoListScroll = new JScrollPane(todoList);
     contentPane.add(todoListScroll, BorderLayout.CENTER);
 
     counter = new JLabel();
@@ -51,6 +52,7 @@ public class TodosView extends JFrame {
   }
 
   private void load() {
+    todoListScroll.setVisible(viewModel.hasTodos());
     todoList.removeAll();
     for (var todo : viewModel.getTodos()) {
       var todoItem = Box.createHorizontalBox();
@@ -60,6 +62,7 @@ public class TodosView extends JFrame {
       todoList.add(todoItem);
     }
 
-    this.counter.setText(viewModel.getCounter());
+    counter.setVisible(viewModel.hasTodos());
+    counter.setText(viewModel.getCounter());
   }
 }

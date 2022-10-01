@@ -13,20 +13,16 @@ public class TodosViewModel {
     update();
   }
 
+  public boolean hasTodos() {
+    return !todos.isEmpty();
+  }
+
   public List<Todo> getTodos() {
     return todos;
   }
 
-  public void setTodos(List<Todo> todos) {
-    this.todos = todos;
-  }
-
   public String getCounter() {
     return counter;
-  }
-
-  public void setCounter(String counter) {
-    this.counter = counter;
   }
 
   public void createTodo(String title) {
@@ -39,9 +35,8 @@ public class TodosViewModel {
   }
 
   private void update() {
-    var todos = model.selectTodos();
-    setTodos(todos);
+    todos = model.selectTodos();
     long count = todos.stream().filter(t -> !t.completed()).count();
-    setCounter(String.format("%1$d %2$s left", count, count == 1 ? "item" : "item" + 's'));
+    counter = String.format("%1$d %2$s left", count, count == 1 ? "item" : "item" + 's');
   }
 }
