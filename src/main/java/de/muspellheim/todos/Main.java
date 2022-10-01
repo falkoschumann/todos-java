@@ -11,11 +11,11 @@ public class Main {
     var todos = new MemoryTodos();
     todos.store(List.of(new Todo(1, "Taste JavaScript", true), new Todo(2, "Buy Unicorn", false)));
     var model = new TodosService(todos);
+    var viewModel = new TodosViewModel(model);
     SwingUtilities.invokeLater(
         () -> {
-          var view = new SwingTodosView();
-          var controller = new TodosController(model, view);
-          controller.run();
+          var view = new TodosView(viewModel);
+          view.run();
         });
   }
 }
