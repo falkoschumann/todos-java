@@ -11,7 +11,7 @@ class MainView extends JScrollPane {
   private final Consumer<Integer> onDestroy;
   private final Box todoList;
 
-  public MainView(Consumer<Integer> onToggle, Consumer<Integer> onDestroy) {
+  MainView(Consumer<Integer> onToggle, Consumer<Integer> onDestroy) {
     this.onToggle = onToggle;
     this.onDestroy = onDestroy;
     todoList = Box.createVerticalBox();

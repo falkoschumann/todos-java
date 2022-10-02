@@ -7,6 +7,7 @@ class TodosViewModel {
   private final TodosService model;
   private Filter filter = Filter.ALL;
   private boolean hasTodos = false;
+  private boolean allCompleted = true;
   private List<Todo> todos;
   private String counter;
   private boolean hasCompletedTodos;
@@ -20,6 +21,10 @@ class TodosViewModel {
     return hasTodos;
   }
 
+  boolean isAllCompleted() {
+    return allCompleted;
+  }
+
   List<Todo> getTodos() {
     return todos;
   }
@@ -28,7 +33,7 @@ class TodosViewModel {
     return counter;
   }
 
-  public boolean hasCompletedTodos() {
+  boolean hasCompletedTodos() {
     return hasCompletedTodos;
   }
 
@@ -38,6 +43,11 @@ class TodosViewModel {
     }
 
     model.addTodo(title);
+    update();
+  }
+
+  void toggleAll() {
+    model.toggleAll(!isAllCompleted());
     update();
   }
 
@@ -56,7 +66,7 @@ class TodosViewModel {
     update();
   }
 
-  public void clearCompleted() {
+  void clearCompleted() {
     model.clearCompleted();
     update();
   }
@@ -69,6 +79,7 @@ class TodosViewModel {
     counter =
         String.format("%1$d %2$s left", activeCount, activeCount == 1 ? "item" : "item" + 's');
     hasCompletedTodos = allTodos.size() - activeCount > 0;
+    allCompleted = activeCount == 0;
   }
 
   private boolean filter(Todo todo) {

@@ -50,6 +50,24 @@ public class TodosServiceTest {
   }
 
   @Test
+  void toggleAll_SetAllCompleted() {
+    repository.store(List.of(new Todo(1, "foo", false), new Todo(2, "bar", true)));
+
+    service.toggleAll(true);
+
+    assertEquals(List.of(new Todo(1, "foo", true), new Todo(2, "bar", true)), repository.load());
+  }
+
+  @Test
+  void toggleAll_SetAllActive() {
+    repository.store(List.of(new Todo(1, "foo", false), new Todo(2, "bar", true)));
+
+    service.toggleAll(false);
+
+    assertEquals(List.of(new Todo(1, "foo", false), new Todo(2, "bar", false)), repository.load());
+  }
+
+  @Test
   void destroyTodo_RemoveTodo() {
     repository.store(List.of(new Todo(1, "foo", true)));
 

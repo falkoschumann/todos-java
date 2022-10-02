@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class TodosView extends JFrame {
   private final TodosViewModel viewModel;
-  private final JTextField newTodo;
+  private final HeaderView header;
   private final MainView main;
   private final FooterView footer;
 
@@ -21,11 +21,8 @@ public class TodosView extends JFrame {
     var contentPane = new JPanel(new BorderLayout());
     add(contentPane);
 
-    newTodo = new JTextField();
-    newTodo.setToolTipText("What needs to be done?");
-    newTodo.requestFocusInWindow();
-    newTodo.addActionListener(e -> handleNewTodo());
-    contentPane.add(newTodo, BorderLayout.NORTH);
+    header = new HeaderView(this::handleToggleAll, this::handleNewTodo);
+    contentPane.add(header, BorderLayout.NORTH);
 
     main = new MainView(this::handleToggle, this::handleDestroy);
     contentPane.add(main, BorderLayout.CENTER);
@@ -41,10 +38,14 @@ public class TodosView extends JFrame {
     load();
   }
 
-  private void handleNewTodo() {
-    String title = newTodo.getText();
+  private void handleNewTodo(String title) {
     viewModel.addTodo(title);
-    newTodo.setText("");
+    header.clearNewTodo();
+    load();
+  }
+
+  private void handleToggleAll() {
+    viewModel.toggleAll();
     load();
   }
 
@@ -69,6 +70,8 @@ public class TodosView extends JFrame {
   }
 
   private void load() {
+    header.setToggleAllVisible(viewModel.hasTodos());
+    header.setToggleAllSelected(viewModel.isAllCompleted());
     main.setVisible(viewModel.hasTodos());
     main.setTodos(viewModel.getTodos());
     footer.setVisible(viewModel.hasTodos());

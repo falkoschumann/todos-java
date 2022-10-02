@@ -37,6 +37,17 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
+  public void toggleAll(boolean checked) {
+    var todos = this.todos.load();
+    todos = doToggleAll(todos, checked);
+    this.todos.store(todos);
+  }
+
+  private static List<Todo> doToggleAll(List<Todo> todos, boolean checked) {
+    return todos.stream().map(t -> new Todo(t.id(), t.title(), checked)).toList();
+  }
+
+  @Override
   public void destroyTodo(int id) {
     var todos = this.todos.load();
     todos = doDestroy(todos, id);

@@ -7,6 +7,8 @@ public interface TodosService {
 
   void toggleTodo(int id);
 
+  void toggleAll(boolean checked);
+
   void destroyTodo(int id);
 
   void clearCompleted();
