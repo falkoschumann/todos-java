@@ -14,7 +14,7 @@ public class TodosView extends JFrame {
     this.viewModel = new TodosViewModel(model);
 
     setTitle("Todos");
-    setPreferredSize(new Dimension(320, 480));
+    setPreferredSize(new Dimension(400, 600));
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLocationByPlatform(true);
 
@@ -30,7 +30,7 @@ public class TodosView extends JFrame {
     main = new MainView(this::handleToggle, this::handleDestroy);
     contentPane.add(main, BorderLayout.CENTER);
 
-    footer = new FooterView(this::handleFilter);
+    footer = new FooterView(this::handleFilter, this::handleClearCompleted);
     contentPane.add(footer, BorderLayout.SOUTH);
 
     pack();
@@ -63,10 +63,16 @@ public class TodosView extends JFrame {
     load();
   }
 
+  private void handleClearCompleted() {
+    viewModel.clearCompleted();
+    load();
+  }
+
   private void load() {
     main.setVisible(viewModel.hasTodos());
     main.setTodos(viewModel.getTodos());
     footer.setVisible(viewModel.hasTodos());
     footer.setCounter(viewModel.getCounter());
+    footer.setClearCompletedVisible(viewModel.hasCompletedTodos());
   }
 }

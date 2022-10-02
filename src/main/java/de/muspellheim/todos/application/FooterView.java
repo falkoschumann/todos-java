@@ -6,8 +6,9 @@ import javax.swing.border.*;
 
 class FooterView extends Box {
   private final JLabel counter;
+  private final JButton clearCompleted;
 
-  FooterView(Consumer<Filter> onFilter) {
+  FooterView(Consumer<Filter> onFilter, Runnable onClearCompleted) {
     super(BoxLayout.X_AXIS);
 
     counter = new JLabel();
@@ -21,9 +22,18 @@ class FooterView extends Box {
     add(filter);
 
     add(Box.createHorizontalGlue());
+
+    clearCompleted = new JButton("Clear completed");
+    clearCompleted.setVisible(false);
+    clearCompleted.addActionListener(e -> onClearCompleted.run());
+    add(clearCompleted);
   }
 
   void setCounter(String text) {
     counter.setText(text);
+  }
+
+  void setClearCompletedVisible(boolean visible) {
+    clearCompleted.setVisible(visible);
   }
 }

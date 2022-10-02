@@ -8,7 +8,7 @@ import javax.swing.*;
 public class Main {
   public static void main(String[] args) {
     var todos = new MemoryTodos();
-    var model = new TodosService(todos);
+    var model = new TodosServiceImpl(todos);
     SwingUtilities.invokeLater(
         () -> {
           var view = new TodosView(model);

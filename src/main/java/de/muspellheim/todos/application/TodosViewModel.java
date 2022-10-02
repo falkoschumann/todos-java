@@ -9,6 +9,7 @@ class TodosViewModel {
   private boolean hasTodos = false;
   private List<Todo> todos;
   private String counter;
+  private boolean hasCompletedTodos;
 
   TodosViewModel(TodosService model) {
     this.model = model;
@@ -27,6 +28,10 @@ class TodosViewModel {
     return counter;
   }
 
+  public boolean hasCompletedTodos() {
+    return hasCompletedTodos;
+  }
+
   void addTodo(String title) {
     if (title.isBlank()) {
       return;
@@ -37,12 +42,12 @@ class TodosViewModel {
   }
 
   void toggleTodo(int id) {
-    model.toggle(id);
+    model.toggleTodo(id);
     update();
   }
 
   void destroyTodo(int id) {
-    model.destroy(id);
+    model.destroyTodo(id);
     update();
   }
 
@@ -51,12 +56,19 @@ class TodosViewModel {
     update();
   }
 
+  public void clearCompleted() {
+    model.clearCompleted();
+    update();
+  }
+
   private void update() {
-    todos = model.selectTodos();
-    hasTodos = !todos.isEmpty();
-    var count = todos.stream().filter(t -> !t.completed()).count();
-    counter = String.format("%1$d %2$s left", count, count == 1 ? "item" : "item" + 's');
-    todos = todos.stream().filter(this::filter).toList();
+    var allTodos = model.selectTodos();
+    todos = allTodos.stream().filter(this::filter).toList();
+    hasTodos = !allTodos.isEmpty();
+    var activeCount = allTodos.stream().filter(t -> !t.completed()).count();
+    counter =
+        String.format("%1$d %2$s left", activeCount, activeCount == 1 ? "item" : "item" + 's');
+    hasCompletedTodos = allTodos.size() - activeCount > 0;
   }
 
   private boolean filter(Todo todo) {

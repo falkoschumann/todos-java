@@ -36,8 +36,8 @@ of [TodoMVC](https://todomvc.com).
 
 - [x] Remove a todo from the list.
 - [x] Hover over todo shows the remove button.
-- [ ] Remove all completed todos.
-- [ ] If there are no completed todos, the remove completed button is hidden.
+- [x] Remove all completed todos.
+- [x] If there are no completed todos, the remove completed button is hidden.
 
 ## Messages
 
@@ -47,7 +47,7 @@ of [TodoMVC](https://todomvc.com).
 - [x] Toggle todo (id)
 - [ ] Toggle all (checked)
 - [x] Destroy todo (id)
-- [ ] Clear completed
+- [x] Clear completed
 - [ ] Save todo (id, title)
 
 ### Queries
