@@ -70,4 +70,16 @@ public class AcceptanceTests {
         sut.getTodos());
     assertEquals("1 item left", sut.getCounter());
   }
+
+  @Test
+  void destroyTodo_RemoveTodo() {
+    sut.addTodo("Taste JavaScript");
+    sut.addTodo("Buy unicorn");
+
+    sut.destroyTodo(1);
+
+    assertTrue(sut.hasTodos());
+    assertEquals(List.of(new Todo(2, "Buy unicorn", false)), sut.getTodos());
+    assertEquals("1 item left", sut.getCounter());
+  }
 }

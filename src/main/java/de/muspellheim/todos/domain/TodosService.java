@@ -37,4 +37,14 @@ public class TodosService {
         .map(t -> t.id() != id ? t : new Todo(t.id(), t.title(), !t.completed()))
         .toList();
   }
+
+  public void destroy(int id) {
+    var todos = this.todos.load();
+    todos = doDestroy(todos, id);
+    this.todos.store(todos);
+  }
+
+  private static List<Todo> doDestroy(List<Todo> todos, int id) {
+    return todos.stream().filter(t -> t.id() != id).toList();
+  }
 }

@@ -39,9 +39,14 @@ class TodosViewModel {
     update();
   }
 
+  void destroyTodo(int id) {
+    model.destroy(id);
+    update();
+  }
+
   private void update() {
     todos = model.selectTodos();
-    long count = todos.stream().filter(t -> !t.completed()).count();
+    var count = todos.stream().filter(t -> !t.completed()).count();
     counter = String.format("%1$d %2$s left", count, count == 1 ? "item" : "item" + 's');
   }
 }

@@ -34,8 +34,8 @@ of [TodoMVC](https://todomvc.com).
 
 ### Remove Todo
 
-- [ ] Remove a todo from the list.
-- [ ] Hover over todo shows the remove button.
+- [x] Remove a todo from the list.
+- [x] Hover over todo shows the remove button.
 - [ ] Remove all completed todos.
 - [ ] If there are no completed todos, the remove completed button is hidden.
 

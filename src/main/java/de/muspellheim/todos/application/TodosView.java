@@ -58,27 +58,20 @@ public class TodosView extends JFrame {
     load();
   }
 
+  private void handleDestroy(int id) {
+    viewModel.destroyTodo(id);
+    load();
+  }
+
   private void load() {
     todoListScroll.setVisible(viewModel.hasTodos());
     todoList.removeAll();
     for (var todo : viewModel.getTodos()) {
-      var todoItem = Box.createHorizontalBox();
-      JCheckBox completed = new JCheckBox();
-      completed.setSelected(todo.completed());
-      completed.addActionListener(e -> handleToggle(todo.id()));
-      todoItem.add(completed);
-
-      JLabel title = new JLabel(todo.title());
-      var titleText = todo.title();
-      if (todo.completed()) {
-        titleText = "<html><strike>" + titleText + "</strike><html>";
-      }
-      title.setText(titleText);
-      todoItem.add(title);
-
-      todoItem.add(Box.createHorizontalGlue());
-      todoList.add(todoItem);
+      var item = new TodoItemView(todo, this::handleToggle, this::handleDestroy);
+      todoList.add(item);
     }
+    todoList.revalidate();
+    todoList.repaint();
 
     counter.setVisible(viewModel.hasTodos());
     counter.setText(viewModel.getCounter());
