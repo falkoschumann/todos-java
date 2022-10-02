@@ -18,7 +18,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void run_NoTodos() {
+  void initialEmpty() {
     assertAll(
         () -> assertFalse(sut.hasTodos(), "has todos"),
         () -> assertEquals(List.of(), sut.getTodos(), "todos"),
@@ -27,7 +27,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void addTodo_AddFirstTodo() {
+  void addFirstTodo() {
     sut.addTodo("Taste JavaScript");
 
     assertAll(
@@ -39,7 +39,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void addTodo_AddSecondTodo() {
+  void addSecondTodo() {
     sut.addTodo("Taste JavaScript");
 
     sut.addTodo("Buy unicorn");
@@ -56,7 +56,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void addTodo_TitleIsBlank_NoTodoIsAdded() {
+  void doNotAddTodoIfTitleIsBlank() {
     sut.addTodo("Taste JavaScript");
 
     sut.addTodo("  ");
@@ -70,7 +70,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void toggleTodo_SetTodoCompleted() {
+  void setTodoCompleted() {
     sut.addTodo("Taste JavaScript");
     sut.addTodo("Buy unicorn");
 
@@ -88,7 +88,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void destroyTodo_RemoveTodo() {
+  void removeTodo() {
     sut.addTodo("Taste JavaScript");
     sut.addTodo("Buy unicorn");
 
@@ -102,7 +102,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void setFilter_ShowOnlyActiveTodos() {
+  void showOnlyActiveTodos() {
     sut.addTodo("Taste JavaScript");
     sut.addTodo("Buy unicorn");
     sut.toggleTodo(1);
@@ -117,7 +117,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void setFilter_ShowOnlyCompletedTodos() {
+  void showOnlyCompletedTodos() {
     sut.addTodo("Taste JavaScript");
     sut.addTodo("Buy unicorn");
     sut.toggleTodo(1);
@@ -132,7 +132,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void setFilter_HideAllTodos() {
+  void hideAllTodos() {
     sut.addTodo("Taste JavaScript");
     sut.addTodo("Buy unicorn");
 
@@ -146,7 +146,7 @@ public class AcceptanceTests {
   }
 
   @Test
-  void clearCompleted_RemovesCompletedTodos() {
+  void removeCompletedTodos() {
     sut.addTodo("Taste JavaScript");
     sut.addTodo("Buy unicorn");
     sut.toggleTodo(1);
