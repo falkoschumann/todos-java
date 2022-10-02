@@ -3,34 +3,39 @@ package de.muspellheim.todos.application;
 import de.muspellheim.todos.domain.*;
 import java.util.*;
 
-public class TodosViewModel {
+class TodosViewModel {
   private final TodosService model;
   private List<Todo> todos;
   private String counter;
 
-  public TodosViewModel(TodosService model) {
+  TodosViewModel(TodosService model) {
     this.model = model;
     update();
   }
 
-  public boolean hasTodos() {
+  boolean hasTodos() {
     return !todos.isEmpty();
   }
 
-  public List<Todo> getTodos() {
+  List<Todo> getTodos() {
     return todos;
   }
 
-  public String getCounter() {
+  String getCounter() {
     return counter;
   }
 
-  public void createTodo(String title) {
+  void addTodo(String title) {
     if (title.isBlank()) {
       return;
     }
 
     model.addTodo(title);
+    update();
+  }
+
+  void toggleTodo(int id) {
+    model.toggle(id);
     update();
   }
 

@@ -1,8 +1,7 @@
-package de.muspellheim.todos;
+package de.muspellheim.todos.application;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import de.muspellheim.todos.application.*;
 import de.muspellheim.todos.domain.*;
 import de.muspellheim.todos.infrastructure.*;
 import java.util.*;
@@ -19,15 +18,15 @@ public class AcceptanceTests {
   }
 
   @Test
-  void run_ShowViewWithZeroTodos() {
+  void run_NoTodos() {
     assertFalse(sut.hasTodos());
     assertEquals(List.of(), sut.getTodos());
     assertEquals("0 items left", sut.getCounter());
   }
 
   @Test
-  void newTodo_AddFirstTodo() {
-    sut.createTodo("Taste JavaScript");
+  void addTodo_AddFirstTodo() {
+    sut.addTodo("Taste JavaScript");
 
     assertTrue(sut.hasTodos());
     assertEquals(List.of(new Todo(1, "Taste JavaScript", false)), sut.getTodos());
@@ -35,10 +34,10 @@ public class AcceptanceTests {
   }
 
   @Test
-  void newTodo_AddSecondTodo() {
-    sut.createTodo("Taste JavaScript");
+  void addTodo_AddSecondTodo() {
+    sut.addTodo("Taste JavaScript");
 
-    sut.createTodo("Buy unicorn");
+    sut.addTodo("Buy unicorn");
 
     assertTrue(sut.hasTodos());
     assertEquals(
@@ -48,13 +47,27 @@ public class AcceptanceTests {
   }
 
   @Test
-  void newTodoIsBlank_TodoIsNotAdded() {
-    sut.createTodo("Taste JavaScript");
+  void addTodo_TitleIsBlank_NoTodoIsAdded() {
+    sut.addTodo("Taste JavaScript");
 
-    sut.createTodo("  ");
+    sut.addTodo("  ");
 
     assertTrue(sut.hasTodos());
     assertEquals(List.of(new Todo(1, "Taste JavaScript", false)), sut.getTodos());
+    assertEquals("1 item left", sut.getCounter());
+  }
+
+  @Test
+  void toggleTodo_SetTodoCompleted() {
+    sut.addTodo("Taste JavaScript");
+    sut.addTodo("Buy unicorn");
+
+    sut.toggleTodo(1);
+
+    assertTrue(sut.hasTodos());
+    assertEquals(
+        List.of(new Todo(1, "Taste JavaScript", true), new Todo(2, "Buy unicorn", false)),
+        sut.getTodos());
     assertEquals("1 item left", sut.getCounter());
   }
 }

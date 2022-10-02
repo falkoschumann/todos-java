@@ -11,11 +11,11 @@ public class TodosService {
 
   public void addTodo(String title) {
     var todos = this.todos.load();
-    todos = doAddTodos(todos, title);
+    todos = doAddTodo(todos, title);
     this.todos.store(todos);
   }
 
-  private static List<Todo> doAddTodos(List<Todo> todos, String title) {
+  private static List<Todo> doAddTodo(List<Todo> todos, String title) {
     var lastId = todos.stream().mapToInt(Todo::id).max().orElse(0);
     todos = new ArrayList<>(todos);
     todos.add(new Todo(lastId + 1, title.trim(), false));
@@ -24,5 +24,17 @@ public class TodosService {
 
   public List<Todo> selectTodos() {
     return todos.load();
+  }
+
+  public void toggle(int id) {
+    var todos = this.todos.load();
+    todos = doToggle(todos, id);
+    this.todos.store(todos);
+  }
+
+  private static List<Todo> doToggle(List<Todo> todos, int id) {
+    return todos.stream()
+        .map(t -> t.id() != id ? t : new Todo(t.id(), t.title(), !t.completed()))
+        .toList();
   }
 }

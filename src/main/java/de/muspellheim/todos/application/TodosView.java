@@ -1,5 +1,6 @@
 package de.muspellheim.todos.application;
 
+import de.muspellheim.todos.domain.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -11,8 +12,8 @@ public class TodosView extends JFrame {
   private final JComponent todoList;
   private final JLabel counter;
 
-  public TodosView(TodosViewModel viewModel) {
-    this.viewModel = viewModel;
+  public TodosView(TodosService model) {
+    this.viewModel = new TodosViewModel(model);
 
     setTitle("Todos");
     setPreferredSize(new Dimension(320, 480));
@@ -25,7 +26,7 @@ public class TodosView extends JFrame {
     newTodo = new JTextField();
     newTodo.setToolTipText("What needs to be done?");
     newTodo.requestFocusInWindow();
-    newTodo.addActionListener(e -> handleNewTodo(viewModel));
+    newTodo.addActionListener(e -> handleNewTodo());
     contentPane.add(newTodo, BorderLayout.NORTH);
 
     todoList = Box.createVerticalBox();
@@ -45,9 +46,15 @@ public class TodosView extends JFrame {
     load();
   }
 
-  private void handleNewTodo(TodosViewModel viewModel) {
-    viewModel.createTodo(newTodo.getText());
+  private void handleNewTodo() {
+    String title = newTodo.getText();
+    viewModel.addTodo(title);
     newTodo.setText("");
+    load();
+  }
+
+  private void handleToggle(int id) {
+    viewModel.toggleTodo(id);
     load();
   }
 
@@ -56,8 +63,19 @@ public class TodosView extends JFrame {
     todoList.removeAll();
     for (var todo : viewModel.getTodos()) {
       var todoItem = Box.createHorizontalBox();
-      todoItem.add(new JCheckBox("", todo.completed()));
-      todoItem.add(new JLabel(todo.title()));
+      JCheckBox completed = new JCheckBox();
+      completed.setSelected(todo.completed());
+      completed.addActionListener(e -> handleToggle(todo.id()));
+      todoItem.add(completed);
+
+      JLabel title = new JLabel(todo.title());
+      var titleText = todo.title();
+      if (todo.completed()) {
+        titleText = "<html><strike>" + titleText + "</strike><html>";
+      }
+      title.setText(titleText);
+      todoItem.add(title);
+
       todoItem.add(Box.createHorizontalGlue());
       todoList.add(todoItem);
     }

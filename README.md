@@ -28,8 +28,8 @@ of [TodoMVC](https://todomvc.com).
 
 ### Complete Todo
 
-- [ ] Mark a todo in the list as completed or active.
-- [ ] Strikethrough out a completed todo.
+- [x] Mark a todo in the list as completed or active.
+- [x] Strikethrough out a completed todo.
 - [ ] Mark all todos as completed or active.
 
 ### Remove Todo
