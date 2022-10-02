@@ -9,8 +9,8 @@ of [TodoMVC](https://todomvc.com).
 
 - [x] Focus new todo text field on startup.
 - [x] If there are no todos, only display text field for new todo.
-- [x] Remove spaces before and after text and only create todo if text is not
-  empty.
+- [x] Remove spaces before and after text.
+- [x] Only create todo if title is not empty.
 
 ### Show Todos
 
@@ -20,11 +20,12 @@ of [TodoMVC](https://todomvc.com).
 
 ### Edit Todo
 
-- [ ] Edit a todo in the list by double-clicking and focus text field.
-- [ ] When editing a todo, only show text box for editing.
-- [ ] Save the change with `Enter` or if you lose focus and cancel the change
-  with `Escape`.
-- [ ] Remove spaces before and after text and delete todo if text is empty.
+- [x] Edit a todo in the list by double-clicking and focus text field.
+- [x] When editing a todo, only show text box for editing.
+- [x] Save the change with `Enter` or if you lose focus.
+- [x] Cancel the change with `Escape`.
+- [x] Remove spaces before and after text.
+- [x] Delete todo if text is empty.
 
 ### Complete Todo
 
@@ -48,7 +49,7 @@ of [TodoMVC](https://todomvc.com).
 - [x] Toggle all (checked)
 - [x] Destroy todo (id)
 - [x] Clear completed
-- [ ] Save todo (id, title)
+- [x] Save todo (id, title)
 
 ### Queries
 

@@ -24,7 +24,7 @@ public class TodosView extends JFrame {
     header = new HeaderView(this::handleToggleAll, this::handleNewTodo);
     contentPane.add(header, BorderLayout.NORTH);
 
-    main = new MainView(this::handleToggle, this::handleDestroy);
+    main = new MainView(this::handleToggle, this::handleSave, this::handleDestroy);
     contentPane.add(main, BorderLayout.CENTER);
 
     footer = new FooterView(this::handleFilter, this::handleClearCompleted);
@@ -51,6 +51,11 @@ public class TodosView extends JFrame {
 
   private void handleToggle(int id) {
     viewModel.toggleTodo(id);
+    load();
+  }
+
+  private void handleSave(Integer id, String title) {
+    viewModel.saveTodo(id, title);
     load();
   }
 

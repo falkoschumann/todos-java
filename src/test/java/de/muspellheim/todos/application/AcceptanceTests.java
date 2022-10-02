@@ -209,4 +209,23 @@ public class AcceptanceTests {
         () -> assertEquals("2 items left", sut.getCounter(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
+
+  @Test
+  void changeTodosTitle() {
+    sut.addTodo("Taste JavaScript");
+    sut.addTodo("Buy unicorn");
+
+    sut.saveTodo(1, "Taste TypeScript");
+
+    assertAll(
+        () -> assertTrue(sut.hasTodos(), "has todos"),
+        () -> assertFalse(sut.isAllCompleted(), "is all complete"),
+        () ->
+            assertEquals(
+                List.of(new Todo(1, "Taste TypeScript", false), new Todo(2, "Buy unicorn", false)),
+                sut.getTodos(),
+                "todos"),
+        () -> assertEquals("2 items left", sut.getCounter(), "counter"),
+        () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
+  }
 }

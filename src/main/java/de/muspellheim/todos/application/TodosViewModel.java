@@ -71,6 +71,11 @@ class TodosViewModel {
     update();
   }
 
+  void saveTodo(int id, String title) {
+    model.saveTodo(id, title);
+    update();
+  }
+
   private void update() {
     var allTodos = model.selectTodos();
     todos = allTodos.stream().filter(this::filter).toList();

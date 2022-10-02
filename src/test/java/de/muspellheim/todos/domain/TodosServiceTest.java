@@ -32,6 +32,13 @@ public class TodosServiceTest {
   }
 
   @Test
+  void addTodo_TrimTitle() {
+    service.addTodo("  foo ");
+
+    assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
+  }
+
+  @Test
   void toggleTodo_SetCompleted() {
     repository.store(List.of(new Todo(1, "foo", false)));
 
@@ -83,6 +90,33 @@ public class TodosServiceTest {
     service.clearCompleted();
 
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
+  }
+
+  @Test
+  void saveTodo_ChangeTodosTitle() {
+    repository.store(List.of(new Todo(1, "foo", false)));
+
+    service.saveTodo(1, "bar");
+
+    assertEquals(List.of(new Todo(1, "bar", false)), repository.load());
+  }
+
+  @Test
+  void saveTodo_TrimTitle() {
+    repository.store(List.of(new Todo(1, "foo", false)));
+
+    service.saveTodo(1, "  bar ");
+
+    assertEquals(List.of(new Todo(1, "bar", false)), repository.load());
+  }
+
+  @Test
+  void saveTodo_DeleteTodoIfTitleIsBlank() {
+    repository.store(List.of(new Todo(1, "foo", false)));
+
+    service.saveTodo(1, "   ");
+
+    assertEquals(List.of(), repository.load());
   }
 
   @Test

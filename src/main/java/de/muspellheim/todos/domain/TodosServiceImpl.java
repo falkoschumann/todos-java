@@ -70,6 +70,24 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
+  public void saveTodo(int id, String title) {
+    var todos = this.todos.load();
+    todos = doSave(todos, id, title);
+    this.todos.store(todos);
+  }
+
+  private static List<Todo> doSave(List<Todo> todos, int id, String title) {
+    var newTitle = title.trim();
+    if (newTitle.isEmpty()) {
+      return todos.stream().filter(t -> t.id() != id).toList();
+    } else {
+      return todos.stream()
+          .map(t -> t.id() != id ? t : new Todo(t.id(), newTitle, t.completed()))
+          .toList();
+    }
+  }
+
+  @Override
   public List<Todo> selectTodos() {
     return todos.load();
   }

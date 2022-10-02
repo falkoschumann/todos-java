@@ -13,5 +13,7 @@ public interface TodosService {
 
   void clearCompleted();
 
+  void saveTodo(int id, String title);
+
   List<Todo> selectTodos();
 }
