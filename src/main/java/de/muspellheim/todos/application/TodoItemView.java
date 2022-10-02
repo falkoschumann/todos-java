@@ -6,10 +6,10 @@ import java.awt.event.*;
 import java.util.function.*;
 import javax.swing.*;
 
-public class TodoItemView extends Box {
+class TodoItemView extends Box {
   private final JButton destroy;
 
-  public TodoItemView(Todo todo, Consumer<Integer> onToggle, Consumer<Integer> onDestroy) {
+  TodoItemView(Todo todo, Consumer<Integer> onToggle, Consumer<Integer> onDestroy) {
     super(BoxLayout.X_AXIS);
 
     var completed = new JCheckBox();

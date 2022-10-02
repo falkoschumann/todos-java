@@ -15,7 +15,7 @@ of [TodoMVC](https://todomvc.com).
 ### Show Todos
 
 - [x] Show all todos.
-- [ ] Show only active or completed todos.
+- [x] Show only active or completed todos.
 - [x] Display number of active todos.
 
 ### Edit Todo
@@ -43,16 +43,16 @@ of [TodoMVC](https://todomvc.com).
 
 ### Commands
 
-- Add todo (title)
-- Toggle todo (id)
-- Toggle all (checked)
-- Destroy todo (id)
-- Clear completed
-- Save todo (id, title)
+- [x] Add todo (title)
+- [x] Toggle todo (id)
+- [ ] Toggle all (checked)
+- [x] Destroy todo (id)
+- [ ] Clear completed
+- [ ] Save todo (id, title)
 
 ### Queries
 
-- Select todos -> (id, title, completed)\*
+- [x] Select todos -> (id, title, completed)\*
 
 ### Notifications
 
