@@ -83,6 +83,8 @@ public class JsonTodos implements Todos {
     String title;
     boolean completed;
 
+    public TodoDto() {}
+
     public TodoDto(int id, String title, boolean completed) {
       this.id = id;
       this.title = title;

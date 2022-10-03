@@ -1,5 +1,8 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
   id 'de.muspellheim.java-application-conventions'
+  id 'de.muspellheim.java-self-contained-application-conventions'
 }
 
 dependencies {
@@ -8,5 +11,26 @@ dependencies {
 }
 
 application {
+  mainModule = 'de.muspellheim.todos.application'
   mainClass = 'de.muspellheim.todos.application.Main'
+}
+
+if (Os.isFamily(Os.FAMILY_MAC)) {
+  jlink {
+    jpackage {
+      imageName = 'Todos'
+    }
+  }
+}
+
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+  jlink {
+    jpackage {
+      imageName = 'Todos'
+      installerName = 'todos'
+      installerOptions += [
+        '--win-upgrade-uuid', 'bd4aa028-d78b-4205-865b-7367d3bd7ac0'
+      ]
+    }
+  }
 }
