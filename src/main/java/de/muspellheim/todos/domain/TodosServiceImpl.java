@@ -1,8 +1,10 @@
 package de.muspellheim.todos.domain;
 
 import java.util.*;
+import java.util.logging.*;
 
 public class TodosServiceImpl implements TodosService {
+  private final Logger logger = Logger.getLogger(getClass().getName());
   private final Todos todos;
 
   public TodosServiceImpl(Todos todos) {
@@ -10,10 +12,17 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public void addTodo(String title) {
-    var todos = this.todos.load();
-    todos = doAddTodo(todos, title);
-    this.todos.store(todos);
+  public CommandStatus addTodo(String title) {
+    try {
+      var todos = this.todos.load();
+      todos = doAddTodo(todos, title);
+      this.todos.store(todos);
+      return new Success();
+    } catch (TodosException e) {
+      String errorMessage = "Add todo \"" + title + "\" failed.";
+      logger.log(Level.WARNING, errorMessage, e);
+      return new Failure(errorMessage, e);
+    }
   }
 
   private static List<Todo> doAddTodo(List<Todo> todos, String title) {
@@ -24,10 +33,17 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public void toggleTodo(int id) {
-    var todos = this.todos.load();
-    todos = doToggle(todos, id);
-    this.todos.store(todos);
+  public CommandStatus toggleTodo(int id) {
+    try {
+      var todos = this.todos.load();
+      todos = doToggle(todos, id);
+      this.todos.store(todos);
+      return new Success();
+    } catch (TodosException e) {
+      String errorMessage = "Toggle todo " + id + " failed.";
+      logger.log(Level.WARNING, errorMessage, e);
+      return new Failure(errorMessage, e);
+    }
   }
 
   private static List<Todo> doToggle(List<Todo> todos, int id) {
@@ -37,10 +53,17 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public void toggleAll(boolean checked) {
-    var todos = this.todos.load();
-    todos = doToggleAll(todos, checked);
-    this.todos.store(todos);
+  public CommandStatus toggleAll(boolean checked) {
+    try {
+      var todos = this.todos.load();
+      todos = doToggleAll(todos, checked);
+      this.todos.store(todos);
+      return new Success();
+    } catch (TodosException e) {
+      String errorMessage = "Toggle all to " + checked + " failed.";
+      logger.log(Level.WARNING, errorMessage, e);
+      return new Failure(errorMessage, e);
+    }
   }
 
   private static List<Todo> doToggleAll(List<Todo> todos, boolean checked) {
@@ -48,10 +71,17 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public void destroyTodo(int id) {
-    var todos = this.todos.load();
-    todos = doDestroy(todos, id);
-    this.todos.store(todos);
+  public CommandStatus destroyTodo(int id) {
+    try {
+      var todos = this.todos.load();
+      todos = doDestroy(todos, id);
+      this.todos.store(todos);
+      return new Success();
+    } catch (TodosException e) {
+      String errorMessage = "Destroy todo " + id + " failed.";
+      logger.log(Level.WARNING, errorMessage, e);
+      return new Failure(errorMessage, e);
+    }
   }
 
   private static List<Todo> doDestroy(List<Todo> todos, int id) {
@@ -59,10 +89,17 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public void clearCompleted() {
-    var todos = this.todos.load();
-    todos = doClearCompleted(todos);
-    this.todos.store(todos);
+  public CommandStatus clearCompleted() {
+    try {
+      var todos = this.todos.load();
+      todos = doClearCompleted(todos);
+      this.todos.store(todos);
+      return new Success();
+    } catch (TodosException e) {
+      String errorMessage = "Clear completed failed.";
+      logger.log(Level.WARNING, errorMessage, e);
+      return new Failure(errorMessage, e);
+    }
   }
 
   private static List<Todo> doClearCompleted(List<Todo> todos) {
@@ -70,10 +107,17 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public void saveTodo(int id, String title) {
-    var todos = this.todos.load();
-    todos = doSave(todos, id, title);
-    this.todos.store(todos);
+  public CommandStatus saveTodo(int id, String title) {
+    try {
+      var todos = this.todos.load();
+      todos = doSave(todos, id, title);
+      this.todos.store(todos);
+      return new Success();
+    } catch (TodosException e) {
+      String errorMessage = "Save todo " + id + " with title \"" + title + "\" failed.";
+      logger.log(Level.WARNING, errorMessage, e);
+      return new Failure(errorMessage, e);
+    }
   }
 
   private static List<Todo> doSave(List<Todo> todos, int id, String title) {
@@ -89,6 +133,11 @@ public class TodosServiceImpl implements TodosService {
 
   @Override
   public List<Todo> selectTodos() {
-    return todos.load();
+    try {
+      return todos.load();
+    } catch (TodosException e) {
+      logger.log(Level.WARNING, "Select todos failed.", e);
+      return List.of();
+    }
   }
 }

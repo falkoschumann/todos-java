@@ -6,7 +6,7 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 
 public class TodosServiceTest {
-  private Todos repository;
+  private FakeTodos repository;
   private TodosService service;
 
   @BeforeEach
@@ -16,115 +16,190 @@ public class TodosServiceTest {
   }
 
   @Test
-  void addTodo_FirstTodo() {
-    service.addTodo("foo");
+  void addTodo_FirstTodo() throws Exception {
+    var status = service.addTodo("foo");
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
   }
 
   @Test
-  void addTodo_SecondTodo() {
+  void addTodo_Failure() {
+    repository.setException("Foobar.");
+
+    var status = service.addTodo("foo");
+
+    assertEquals(new Failure("Add todo \"foo\" failed. Foobar."), status);
+  }
+
+  @Test
+  void addTodo_SecondTodo() throws Exception {
     repository.store(List.of(new Todo(1, "foo", true)));
 
-    service.addTodo("bar");
+    var status = service.addTodo("bar");
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "foo", true), new Todo(2, "bar", false)), repository.load());
   }
 
   @Test
-  void addTodo_TrimTitle() {
-    service.addTodo("  foo ");
+  void addTodo_TrimTitle() throws Exception {
+    var status = service.addTodo("  foo ");
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
   }
 
   @Test
-  void toggleTodo_SetCompleted() {
+  void toggleTodo_SetCompleted() throws Exception {
     repository.store(List.of(new Todo(1, "foo", false)));
 
-    service.toggleTodo(1);
+    var status = service.toggleTodo(1);
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "foo", true)), repository.load());
   }
 
   @Test
-  void toggleTodo_SetActive() {
+  void toggleTodo_SetActive() throws Exception {
     repository.store(List.of(new Todo(1, "foo", true)));
 
-    service.toggleTodo(1);
+    var status = service.toggleTodo(1);
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
   }
 
   @Test
-  void toggleAll_SetAllCompleted() {
+  void toggleTodo_Failure() {
+    repository.setException("Foobar.");
+
+    var status = service.toggleTodo(42);
+
+    assertEquals(new Failure("Toggle todo 42 failed. Foobar."), status);
+  }
+
+  @Test
+  void toggleAll_SetAllCompleted() throws Exception {
     repository.store(List.of(new Todo(1, "foo", false), new Todo(2, "bar", true)));
 
-    service.toggleAll(true);
+    var status = service.toggleAll(true);
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "foo", true), new Todo(2, "bar", true)), repository.load());
   }
 
   @Test
-  void toggleAll_SetAllActive() {
+  void toggleAll_SetAllActive() throws Exception {
     repository.store(List.of(new Todo(1, "foo", false), new Todo(2, "bar", true)));
 
-    service.toggleAll(false);
+    var status = service.toggleAll(false);
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "foo", false), new Todo(2, "bar", false)), repository.load());
   }
 
   @Test
-  void destroyTodo_RemoveTodo() {
+  void toggleAll_Failure() {
+    repository.setException("Foobar.");
+
+    var status = service.toggleAll(true);
+
+    assertEquals(new Failure("Toggle all to true failed. Foobar."), status);
+  }
+
+  @Test
+  void destroyTodo_RemoveTodo() throws Exception {
     repository.store(List.of(new Todo(1, "foo", true)));
 
-    service.destroyTodo(1);
+    var status = service.destroyTodo(1);
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(), repository.load());
   }
 
   @Test
-  void clearCompleted_RemoveCompletedTodo() {
+  void destroyTodo_Failure() {
+    repository.setException("Foobar.");
+
+    var status = service.destroyTodo(42);
+
+    assertEquals(new Failure("Destroy todo 42 failed. Foobar."), status);
+  }
+
+  @Test
+  void clearCompleted_RemoveCompletedTodo() throws Exception {
     repository.store(List.of(new Todo(1, "foo", false), new Todo(2, "bar", true)));
 
-    service.clearCompleted();
+    var status = service.clearCompleted();
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
   }
 
   @Test
-  void saveTodo_ChangeTodosTitle() {
+  void clearCompleted_Failure() {
+    repository.setException("Foobar.");
+
+    var status = service.clearCompleted();
+
+    assertEquals(new Failure("Clear completed failed. Foobar."), status);
+  }
+
+  @Test
+  void saveTodo_ChangeTodosTitle() throws Exception {
     repository.store(List.of(new Todo(1, "foo", false)));
 
-    service.saveTodo(1, "bar");
+    var status = service.saveTodo(1, "bar");
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "bar", false)), repository.load());
   }
 
   @Test
-  void saveTodo_TrimTitle() {
+  void saveTodo_TrimTitle() throws Exception {
     repository.store(List.of(new Todo(1, "foo", false)));
 
-    service.saveTodo(1, "  bar ");
+    var status = service.saveTodo(1, "  bar ");
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "bar", false)), repository.load());
   }
 
   @Test
-  void saveTodo_DeleteTodoIfTitleIsBlank() {
+  void saveTodo_DeleteTodoIfTitleIsBlank() throws Exception {
     repository.store(List.of(new Todo(1, "foo", false)));
 
-    service.saveTodo(1, "   ");
+    var status = service.saveTodo(1, "   ");
 
+    assertEquals(new Success(), status);
     assertEquals(List.of(), repository.load());
   }
 
   @Test
-  void selectTodos_ReturnStoredTodos() {
+  void saveTodo_Failure() {
+    repository.setException("Foobar.");
+
+    var status = service.saveTodo(42, "Bar");
+
+    assertEquals(new Failure("Save todo 42 with title \"Bar\" failed. Foobar."), status);
+  }
+
+  @Test
+  void selectTodos_ReturnStoredTodos() throws Exception {
     repository.store(List.of(new Todo(1, "foo", true), new Todo(2, "bar", false)));
 
     var result = service.selectTodos();
 
     assertEquals(List.of(new Todo(1, "foo", true), new Todo(2, "bar", false)), result);
+  }
+
+  @Test
+  void selectTodos_Failure_ReturnEmptyList() {
+    repository.setException("Foobar.");
+
+    var result = service.selectTodos();
+
+    assertEquals(result, List.of());
   }
 }

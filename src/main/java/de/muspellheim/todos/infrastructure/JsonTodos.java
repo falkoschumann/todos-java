@@ -14,13 +14,13 @@ public class JsonTodos implements Todos {
   }
 
   @Override
-  public List<Todo> load() {
+  public List<Todo> load() throws TodosException {
     var json = readFile();
     var dto = parseJson(json);
     return mapTodos(dto);
   }
 
-  private String readFile() {
+  private String readFile() throws TodosException {
     if (!Files.exists(file)) {
       // Return empty JSON.
       return "[]";
@@ -29,35 +29,33 @@ public class JsonTodos implements Todos {
     try {
       return Files.readString(file);
     } catch (IOException e) {
-      System.err.println("Can not read from file: " + e);
-      return "[]";
+      throw new TodosException("File is not readable.", e);
     }
   }
 
-  private TodoDto[] parseJson(String json) {
+  private TodoDto[] parseJson(String json) throws TodosException {
     try {
       return new Gson().fromJson(json, TodoDto[].class);
     } catch (JsonSyntaxException e) {
-      System.err.println("Can not parse JSON: " + e);
-      return new TodoDto[0];
+      throw new TodosException("JSON file is not parsable.", e);
     }
   }
 
-  private List<Todo> mapTodos(TodoDto[] dtos) {
+  private List<Todo> mapTodos(TodoDto[] dtos) throws TodosException {
     var todos = new ArrayList<Todo>();
     for (TodoDto dto : dtos) {
       try {
         var todo = new Todo(dto.id, dto.title, dto.completed);
         todos.add(todo);
       } catch (NullPointerException | IllegalAccessError e) {
-        System.err.println("Can not create todo: " + e);
+        throw new TodosException("Todo is not valid.", e);
       }
     }
     return todos;
   }
 
   @Override
-  public void store(List<Todo> todos) {
+  public void store(List<Todo> todos) throws TodosException {
     var dto = createDto(todos);
     var json = createJson(dto);
     writeFile(json);
@@ -72,11 +70,11 @@ public class JsonTodos implements Todos {
     return gson.toJson(dto);
   }
 
-  private void writeFile(String json) {
+  private void writeFile(String json) throws TodosException {
     try {
       Files.writeString(file, json);
     } catch (IOException e) {
-      System.err.println("Can not write to file: " + e);
+      throw new TodosException("File is not writable.", e);
     }
   }
 

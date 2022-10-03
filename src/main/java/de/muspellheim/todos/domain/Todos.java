@@ -3,7 +3,7 @@ package de.muspellheim.todos.domain;
 import java.util.*;
 
 public interface Todos {
-  List<Todo> load();
+  List<Todo> load() throws TodosException;
 
-  void store(List<Todo> todos);
+  void store(List<Todo> todos) throws TodosException;
 }
