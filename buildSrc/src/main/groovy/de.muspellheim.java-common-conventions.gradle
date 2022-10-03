@@ -1,0 +1,30 @@
+import java.time.LocalDate
+
+plugins {
+  id 'java'
+  id 'com.diffplug.spotless'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+}
+
+version = rootProject.version
+
+ext {
+  copyrightYear = LocalDate.now().year
+}
+
+test {
+  useJUnitPlatform()
+}
+
+spotless {
+  java {
+    googleJavaFormat()
+  }
+}

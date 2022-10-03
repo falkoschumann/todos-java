@@ -1,0 +1,12 @@
+plugins {
+  id 'de.muspellheim.java-application-conventions'
+}
+
+dependencies {
+  implementation project(':todos-domain')
+  implementation project(':todos-infrastructure')
+}
+
+application {
+  mainClass = 'de.muspellheim.todos.application.Main'
+}

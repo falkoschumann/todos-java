@@ -1,6 +1,5 @@
-package de.muspellheim.todos;
+package de.muspellheim.todos.application;
 
-import de.muspellheim.todos.application.*;
 import de.muspellheim.todos.domain.*;
 import de.muspellheim.todos.infrastructure.*;
 import java.nio.file.*;
