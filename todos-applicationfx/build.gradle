@@ -1,0 +1,41 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+plugins {
+  id 'de.muspellheim.java-application-conventions'
+  id 'de.muspellheim.java-self-contained-application-conventions'
+  id 'de.muspellheim.java-openjfx-conventions'
+}
+
+dependencies {
+  implementation project(':todos-domain')
+  implementation project(':todos-infrastructure')
+}
+
+application {
+  mainModule = 'de.muspellheim.todos.applicationfx'
+  mainClass = 'de.muspellheim.todos.applicationfx.App'
+}
+
+javafx {
+  modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+if (Os.isFamily(Os.FAMILY_MAC)) {
+  jlink {
+    jpackage {
+      imageName = 'Todos'
+    }
+  }
+}
+
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+  jlink {
+    jpackage {
+      imageName = 'Todos'
+      installerName = 'todos'
+      installerOptions += [
+        '--win-upgrade-uuid', '8f39dd2d-5fbd-4b47-93b2-b9e1a57da569'
+      ]
+    }
+  }
+}
