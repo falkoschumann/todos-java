@@ -5,21 +5,21 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 class FooterView extends Box {
-  private final JLabel counter;
+  private final JLabel todoCount;
   private final JButton clearCompleted;
 
   FooterView(Consumer<Filter> onFilter, Runnable onClearCompleted) {
     super(BoxLayout.X_AXIS);
 
-    counter = new JLabel();
-    counter.setBorder(new EmptyBorder(4, 8, 4, 8));
-    add(counter);
+    todoCount = new JLabel();
+    todoCount.setBorder(new EmptyBorder(4, 8, 4, 8));
+    add(todoCount);
 
     add(Box.createHorizontalGlue());
 
-    var filter = new JComboBox<>(Filter.values());
-    filter.addActionListener(e -> onFilter.accept((Filter) filter.getSelectedItem()));
-    add(filter);
+    var filters = new JComboBox<>(Filter.values());
+    filters.addActionListener(e -> onFilter.accept((Filter) filters.getSelectedItem()));
+    add(filters);
 
     add(Box.createHorizontalGlue());
 
@@ -29,8 +29,8 @@ class FooterView extends Box {
     add(clearCompleted);
   }
 
-  void setCounter(String text) {
-    counter.setText(text);
+  void setTodoCount(String text) {
+    todoCount.setText(text);
   }
 
   void setClearCompletedVisible(boolean visible) {

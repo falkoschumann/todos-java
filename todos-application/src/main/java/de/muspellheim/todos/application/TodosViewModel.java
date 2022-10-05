@@ -9,7 +9,7 @@ class TodosViewModel {
   private boolean hasTodos = false;
   private boolean allCompleted = true;
   private List<Todo> todos;
-  private String counter;
+  private String todoCount;
   private boolean hasCompletedTodos;
 
   TodosViewModel(TodosService model) {
@@ -29,8 +29,8 @@ class TodosViewModel {
     return todos;
   }
 
-  String getCounter() {
-    return counter;
+  String getTodoCount() {
+    return todoCount;
   }
 
   boolean hasCompletedTodos() {
@@ -81,8 +81,10 @@ class TodosViewModel {
     todos = allTodos.stream().filter(this::filter).toList();
     hasTodos = !allTodos.isEmpty();
     var activeCount = allTodos.stream().filter(t -> !t.completed()).count();
-    counter =
-        String.format("%1$d %2$s left", activeCount, activeCount == 1 ? "item" : "item" + 's');
+    todoCount =
+        String.format(
+            "<html><strong>%1$d</strong> %2$s left</html>",
+            activeCount, activeCount == 1 ? "item" : "item" + 's');
     hasCompletedTodos = allTodos.size() - activeCount > 0;
     allCompleted = activeCount == 0;
   }

@@ -23,7 +23,9 @@ public class AcceptanceTests {
         () -> assertFalse(sut.hasTodos(), "has todos"),
         () -> assertTrue(sut.isAllCompleted(), "is all complete"),
         () -> assertEquals(List.of(), sut.getTodos(), "todos"),
-        () -> assertEquals("0 items left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>0</strong> items left</html>", sut.getTodoCount(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -36,7 +38,9 @@ public class AcceptanceTests {
         () -> assertFalse(sut.isAllCompleted(), "is all complete"),
         () ->
             assertEquals(List.of(new Todo(1, "Taste JavaScript", false)), sut.getTodos(), "todos"),
-        () -> assertEquals("1 item left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>1</strong> item left</html>", sut.getTodoCount(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -54,7 +58,9 @@ public class AcceptanceTests {
                 List.of(new Todo(1, "Taste JavaScript", false), new Todo(2, "Buy unicorn", false)),
                 sut.getTodos(),
                 "todos"),
-        () -> assertEquals("2 items left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>2</strong> items left</html>", sut.getTodoCount(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -69,7 +75,9 @@ public class AcceptanceTests {
         () -> assertFalse(sut.isAllCompleted(), "is all complete"),
         () ->
             assertEquals(List.of(new Todo(1, "Taste JavaScript", false)), sut.getTodos(), "todos"),
-        () -> assertEquals("1 item left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>1</strong> item left</html>", sut.getTodoCount(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -88,7 +96,9 @@ public class AcceptanceTests {
                 List.of(new Todo(1, "Taste JavaScript", true), new Todo(2, "Buy unicorn", false)),
                 sut.getTodos(),
                 "todos"),
-        () -> assertEquals("1 item left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>1</strong> item left</html>", sut.getTodoCount(), "counter"),
         () -> assertTrue(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -103,7 +113,9 @@ public class AcceptanceTests {
         () -> assertTrue(sut.hasTodos(), "has todos"),
         () -> assertFalse(sut.isAllCompleted(), "is all complete"),
         () -> assertEquals(List.of(new Todo(2, "Buy unicorn", false)), sut.getTodos(), "todos"),
-        () -> assertEquals("1 item left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>1</strong> item left</html>", sut.getTodoCount(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -119,7 +131,9 @@ public class AcceptanceTests {
         () -> assertTrue(sut.hasTodos(), "has todos"),
         () -> assertFalse(sut.isAllCompleted(), "is all complete"),
         () -> assertEquals(List.of(new Todo(2, "Buy unicorn", false)), sut.getTodos(), "todos"),
-        () -> assertEquals("1 item left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>1</strong> item left</html>", sut.getTodoCount(), "counter"),
         () -> assertTrue(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -135,7 +149,9 @@ public class AcceptanceTests {
         () -> assertTrue(sut.hasTodos(), "has todos"),
         () -> assertFalse(sut.isAllCompleted(), "is all complete"),
         () -> assertEquals(List.of(new Todo(1, "Taste JavaScript", true)), sut.getTodos(), "todos"),
-        () -> assertEquals("1 item left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>1</strong> item left</html>", sut.getTodoCount(), "counter"),
         () -> assertTrue(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -149,7 +165,9 @@ public class AcceptanceTests {
     assertAll(
         () -> assertTrue(sut.hasTodos(), "has todos"),
         () -> assertEquals(List.of(), sut.getTodos(), "todos"),
-        () -> assertEquals("2 items left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>2</strong> items left</html>", sut.getTodoCount(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -165,7 +183,9 @@ public class AcceptanceTests {
         () -> assertTrue(sut.hasTodos(), "has todos"),
         () -> assertFalse(sut.isAllCompleted(), "is all complete"),
         () -> assertEquals(List.of(new Todo(2, "Buy unicorn", false)), sut.getTodos(), "todos"),
-        () -> assertEquals("1 item left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>1</strong> item left</html>", sut.getTodoCount(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -185,7 +205,9 @@ public class AcceptanceTests {
                 List.of(new Todo(1, "Taste JavaScript", true), new Todo(2, "Buy unicorn", true)),
                 sut.getTodos(),
                 "todos"),
-        () -> assertEquals("0 items left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>0</strong> items left</html>", sut.getTodoCount(), "counter"),
         () -> assertTrue(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -206,7 +228,9 @@ public class AcceptanceTests {
                 List.of(new Todo(1, "Taste JavaScript", false), new Todo(2, "Buy unicorn", false)),
                 sut.getTodos(),
                 "todos"),
-        () -> assertEquals("2 items left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>2</strong> items left</html>", sut.getTodoCount(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
 
@@ -225,7 +249,9 @@ public class AcceptanceTests {
                 List.of(new Todo(1, "Taste TypeScript", false), new Todo(2, "Buy unicorn", false)),
                 sut.getTodos(),
                 "todos"),
-        () -> assertEquals("2 items left", sut.getCounter(), "counter"),
+        () ->
+            assertEquals(
+                "<html><strong>2</strong> items left</html>", sut.getTodoCount(), "counter"),
         () -> assertFalse(sut.hasCompletedTodos(), "has completed todos"));
   }
 }

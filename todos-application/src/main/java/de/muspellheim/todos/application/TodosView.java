@@ -80,7 +80,7 @@ public class TodosView extends JFrame {
     main.setVisible(viewModel.hasTodos());
     main.setTodos(viewModel.getTodos());
     footer.setVisible(viewModel.hasTodos());
-    footer.setCounter(viewModel.getCounter());
+    footer.setTodoCount(viewModel.getTodoCount());
     footer.setClearCompletedVisible(viewModel.hasCompletedTodos());
   }
 }

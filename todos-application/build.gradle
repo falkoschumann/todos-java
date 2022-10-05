@@ -12,7 +12,7 @@ dependencies {
 
 application {
   mainModule = 'de.muspellheim.todos.application'
-  mainClass = 'de.muspellheim.todos.application.Main'
+  mainClass = 'de.muspellheim.todos.application.App'
 }
 
 if (Os.isFamily(Os.FAMILY_MAC)) {

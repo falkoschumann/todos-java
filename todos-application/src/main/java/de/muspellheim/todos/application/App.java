@@ -5,7 +5,7 @@ import de.muspellheim.todos.infrastructure.*;
 import java.nio.file.*;
 import javax.swing.*;
 
-public class Main {
+public class App {
   public static void main(String[] args) {
     Path file = Paths.get(System.getProperty("user.home"), "todos.json");
     var todos = new JsonTodos(file);
