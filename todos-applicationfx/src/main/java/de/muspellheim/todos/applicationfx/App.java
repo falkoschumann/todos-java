@@ -12,7 +12,7 @@ public class App extends Application {
   @Override
   public void init() {
     Path file = Paths.get(System.getProperty("user.home"), "todos.json");
-    var todos = new JsonTodos(file);
+    var todos = new JsonTodosRepository(file);
     model = new TodosServiceImpl(todos);
   }
 

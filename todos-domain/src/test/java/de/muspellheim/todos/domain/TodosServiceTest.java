@@ -6,12 +6,12 @@ import java.util.*;
 import org.junit.jupiter.api.*;
 
 public class TodosServiceTest {
-  private FakeTodos repository;
+  private FakeTodosRepository repository;
   private TodosService service;
 
   @BeforeEach
   void setUp() {
-    repository = new FakeTodos();
+    repository = new FakeTodosRepository();
     service = new TodosServiceImpl(repository);
   }
 
@@ -48,6 +48,14 @@ public class TodosServiceTest {
 
     assertEquals(new Success(), status);
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
+  }
+
+  @Test
+  void addTodo_DoNothingIfTitleIsBlank() throws Exception {
+    var status = service.addTodo("   ");
+
+    assertEquals(new Success(), status);
+    assertEquals(List.of(), repository.load());
   }
 
   @Test
@@ -101,6 +109,7 @@ public class TodosServiceTest {
 
   @Test
   void toggleAll_Failure() {
+
     repository.setException("Foobar.");
 
     var status = service.toggleAll(true);
@@ -109,13 +118,23 @@ public class TodosServiceTest {
   }
 
   @Test
-  void destroyTodo_RemoveTodo() throws Exception {
-    repository.store(List.of(new Todo(1, "foo", true)));
+  void destroyTodo_RemoveFirstTodo() throws Exception {
+    repository.store(List.of(new Todo(1, "foo", true), new Todo(2, "bar", false)));
 
     var status = service.destroyTodo(1);
 
     assertEquals(new Success(), status);
-    assertEquals(List.of(), repository.load());
+    assertEquals(List.of(new Todo(2, "bar", false)), repository.load());
+  }
+
+  @Test
+  void destroyTodo_RemoveSecondTodo() throws Exception {
+    repository.store(List.of(new Todo(1, "foo", true), new Todo(2, "bar", false)));
+
+    var status = service.destroyTodo(2);
+
+    assertEquals(new Success(), status);
+    assertEquals(List.of(new Todo(1, "foo", true)), repository.load());
   }
 
   @Test
@@ -180,9 +199,9 @@ public class TodosServiceTest {
   void saveTodo_Failure() {
     repository.setException("Foobar.");
 
-    var status = service.saveTodo(42, "Bar");
+    var status = service.saveTodo(42, "bar");
 
-    assertEquals(new Failure("Save todo 42 with title \"Bar\" failed. Foobar."), status);
+    assertEquals(new Failure("Save todo 42 with title \"bar\" failed. Foobar."), status);
   }
 
   @Test

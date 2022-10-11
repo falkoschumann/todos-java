@@ -5,8 +5,10 @@ import javafx.beans.property.*;
 import javafx.collections.*;
 
 class TodosViewModel {
+  // TODO handle failure
+
   private final ReadOnlyBooleanWrapper hasTodos = new ReadOnlyBooleanWrapper(false);
-  private final ReadOnlyBooleanWrapper allCompleted = new ReadOnlyBooleanWrapper(true);
+  private final ReadOnlyBooleanWrapper allCompleted = new ReadOnlyBooleanWrapper(false);
   private final ReadOnlyStringWrapper todoCount1 = new ReadOnlyStringWrapper("0");
   private final ReadOnlyStringWrapper todoCount2 = new ReadOnlyStringWrapper(" items left");
   private final ObservableList<Todo> todos = FXCollections.observableArrayList();
@@ -100,7 +102,7 @@ class TodosViewModel {
     todoCount1.set(String.format("%1$d", activeCount));
     todoCount2.set(String.format(" %1$s left", activeCount == 1 ? "item" : "item" + 's'));
     hasCompletedTodos.set(allTodos.size() - activeCount > 0);
-    allCompleted.set(activeCount == 0);
+    allCompleted.set(!allTodos.isEmpty() && activeCount == 0);
   }
 
   private boolean filter(Todo todo) {

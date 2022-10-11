@@ -3,7 +3,7 @@ package de.muspellheim.todos.infrastructure;
 import de.muspellheim.todos.domain.*;
 import java.util.*;
 
-public class MemoryTodos implements Todos {
+public class MemoryTodosRepository implements Todos {
   private List<Todo> todos = List.of();
 
   @Override

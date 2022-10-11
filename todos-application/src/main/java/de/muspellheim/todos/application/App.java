@@ -8,7 +8,7 @@ import javax.swing.*;
 public class App {
   public static void main(String[] args) {
     Path file = Paths.get(System.getProperty("user.home"), "todos.json");
-    var todos = new JsonTodos(file);
+    var todos = new JsonTodosRepository(file);
     var model = new TodosServiceImpl(todos);
     SwingUtilities.invokeLater(
         () -> {

@@ -2,7 +2,7 @@ package de.muspellheim.todos.domain;
 
 import java.util.*;
 
-public class FakeTodos implements Todos {
+public class FakeTodosRepository implements Todos {
   private List<Todo> todos = List.of();
   private String message;
 

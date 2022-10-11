@@ -6,10 +6,10 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
-public class JsonTodos implements Todos {
+public class JsonTodosRepository implements Todos {
   private final Path file;
 
-  public JsonTodos(Path file) {
+  public JsonTodosRepository(Path file) {
     this.file = file;
   }
 

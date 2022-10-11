@@ -12,7 +12,7 @@ public class AcceptanceTests {
 
   @BeforeEach
   void setUp() {
-    var repository = new MemoryTodos();
+    var repository = new MemoryTodosRepository();
     var model = new TodosServiceImpl(repository);
     sut = new TodosViewModel(model);
   }
@@ -21,7 +21,7 @@ public class AcceptanceTests {
   void initialEmpty() {
     assertAll(
         () -> assertFalse(sut.hasTodos(), "has todos"),
-        () -> assertTrue(sut.isAllCompleted(), "is all complete"),
+        () -> assertFalse(sut.isAllCompleted(), "is all complete"),
         () -> assertEquals(List.of(), sut.getTodos(), "todos"),
         () ->
             assertEquals(

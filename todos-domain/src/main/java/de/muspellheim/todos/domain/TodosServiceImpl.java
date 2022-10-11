@@ -1,6 +1,7 @@
 package de.muspellheim.todos.domain;
 
 import java.util.*;
+import java.util.function.*;
 import java.util.logging.*;
 
 public class TodosServiceImpl implements TodosService {
@@ -14,6 +15,11 @@ public class TodosServiceImpl implements TodosService {
   @Override
   public CommandStatus addTodo(String title) {
     try {
+      title = title.trim();
+      if (title.isEmpty()) {
+        return new Success();
+      }
+
       var todos = this.todos.load();
       todos = doAddTodo(todos, title);
       this.todos.store(todos);
@@ -28,7 +34,7 @@ public class TodosServiceImpl implements TodosService {
   private static List<Todo> doAddTodo(List<Todo> todos, String title) {
     var lastId = todos.stream().mapToInt(Todo::id).max().orElse(0);
     todos = new ArrayList<>(todos);
-    todos.add(new Todo(lastId + 1, title.trim(), false));
+    todos.add(new Todo(lastId + 1, title, false));
     return todos;
   }
 
@@ -110,7 +116,12 @@ public class TodosServiceImpl implements TodosService {
   public CommandStatus saveTodo(int id, String title) {
     try {
       var todos = this.todos.load();
-      todos = doSave(todos, id, title);
+      title = title.trim();
+      if (title.isEmpty()) {
+        todos = doDestroy(todos, id);
+      } else {
+        todos = doSave(todos, id, title);
+      }
       this.todos.store(todos);
       return new Success();
     } catch (TodosException e) {
@@ -121,14 +132,9 @@ public class TodosServiceImpl implements TodosService {
   }
 
   private static List<Todo> doSave(List<Todo> todos, int id, String title) {
-    var newTitle = title.trim();
-    if (newTitle.isEmpty()) {
-      return todos.stream().filter(t -> t.id() != id).toList();
-    } else {
-      return todos.stream()
-          .map(t -> t.id() != id ? t : new Todo(t.id(), newTitle, t.completed()))
-          .toList();
-    }
+    return todos.stream()
+        .map(t -> t.id() != id ? t : new Todo(t.id(), title, t.completed()))
+        .toList();
   }
 
   @Override
