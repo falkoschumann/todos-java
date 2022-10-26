@@ -16,8 +16,7 @@ public class JsonTodosRepository implements Todos {
   @Override
   public List<Todo> load() throws TodosException {
     var json = readFile();
-    var dto = parseJson(json);
-    return mapTodos(dto);
+    return parseJson(json);
   }
 
   private String readFile() throws TodosException {
@@ -33,41 +32,24 @@ public class JsonTodosRepository implements Todos {
     }
   }
 
-  private TodoDto[] parseJson(String json) throws TodosException {
+  private List<Todo> parseJson(String json) throws TodosException {
     try {
-      return new Gson().fromJson(json, TodoDto[].class);
+      Todo[] todos = new Gson().fromJson(json, Todo[].class);
+      return List.of(todos);
     } catch (JsonSyntaxException e) {
       throw new TodosException("JSON file is not parsable.", e);
     }
   }
 
-  private List<Todo> mapTodos(TodoDto[] dtos) throws TodosException {
-    var todos = new ArrayList<Todo>();
-    for (TodoDto dto : dtos) {
-      try {
-        var todo = new Todo(dto.id, dto.title, dto.completed);
-        todos.add(todo);
-      } catch (NullPointerException | IllegalAccessError e) {
-        throw new TodosException("Todo is not valid.", e);
-      }
-    }
-    return todos;
-  }
-
   @Override
   public void store(List<Todo> todos) throws TodosException {
-    var dto = createDto(todos);
-    var json = createJson(dto);
+    var json = createJson(todos);
     writeFile(json);
   }
 
-  private static Object[] createDto(List<Todo> todos) {
-    return todos.stream().map(e -> new TodoDto(e.id(), e.title(), e.completed())).toArray();
-  }
-
-  private static String createJson(Object[] dto) {
+  private static String createJson(List<Todo> todos) {
     var gson = new Gson();
-    return gson.toJson(dto);
+    return gson.toJson(todos);
   }
 
   private void writeFile(String json) throws TodosException {
@@ -75,20 +57,6 @@ public class JsonTodosRepository implements Todos {
       Files.writeString(file, json);
     } catch (IOException e) {
       throw new TodosException("File is not writable.", e);
-    }
-  }
-
-  public static class TodoDto {
-    int id;
-    String title;
-    boolean completed;
-
-    public TodoDto() {}
-
-    public TodoDto(int id, String title, boolean completed) {
-      this.id = id;
-      this.title = title;
-      this.completed = completed;
     }
   }
 }
