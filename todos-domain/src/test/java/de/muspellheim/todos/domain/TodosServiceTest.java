@@ -19,7 +19,7 @@ public class TodosServiceTest {
   void addTodo_FirstTodo() throws Exception {
     var status = service.addTodo("foo");
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
   }
 
@@ -29,7 +29,7 @@ public class TodosServiceTest {
 
     var status = service.addTodo("foo");
 
-    assertEquals(new Failure("Add todo \"foo\" failed. Foobar."), status);
+    assertEquals(Result.fail("Add todo \"foo\" failed. Foobar."), status);
   }
 
   @Test
@@ -38,7 +38,7 @@ public class TodosServiceTest {
 
     var status = service.addTodo("bar");
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "foo", true), new Todo(2, "bar", false)), repository.load());
   }
 
@@ -46,7 +46,7 @@ public class TodosServiceTest {
   void addTodo_TrimTitle() throws Exception {
     var status = service.addTodo("  foo ");
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
   }
 
@@ -54,7 +54,7 @@ public class TodosServiceTest {
   void addTodo_DoNothingIfTitleIsBlank() throws Exception {
     var status = service.addTodo("   ");
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(), repository.load());
   }
 
@@ -64,7 +64,7 @@ public class TodosServiceTest {
 
     var status = service.toggleTodo(1);
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "foo", true)), repository.load());
   }
 
@@ -74,7 +74,7 @@ public class TodosServiceTest {
 
     var status = service.toggleTodo(1);
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
   }
 
@@ -84,7 +84,7 @@ public class TodosServiceTest {
 
     var status = service.toggleTodo(42);
 
-    assertEquals(new Failure("Toggle todo 42 failed. Foobar."), status);
+    assertEquals(Result.fail("Toggle todo 42 failed. Foobar."), status);
   }
 
   @Test
@@ -93,7 +93,7 @@ public class TodosServiceTest {
 
     var status = service.toggleAll(true);
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "foo", true), new Todo(2, "bar", true)), repository.load());
   }
 
@@ -103,7 +103,7 @@ public class TodosServiceTest {
 
     var status = service.toggleAll(false);
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "foo", false), new Todo(2, "bar", false)), repository.load());
   }
 
@@ -114,7 +114,7 @@ public class TodosServiceTest {
 
     var status = service.toggleAll(true);
 
-    assertEquals(new Failure("Toggle all to true failed. Foobar."), status);
+    assertEquals(Result.fail("Toggle all to true failed. Foobar."), status);
   }
 
   @Test
@@ -123,7 +123,7 @@ public class TodosServiceTest {
 
     var status = service.destroyTodo(1);
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(2, "bar", false)), repository.load());
   }
 
@@ -133,7 +133,7 @@ public class TodosServiceTest {
 
     var status = service.destroyTodo(2);
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "foo", true)), repository.load());
   }
 
@@ -143,7 +143,7 @@ public class TodosServiceTest {
 
     var status = service.destroyTodo(42);
 
-    assertEquals(new Failure("Destroy todo 42 failed. Foobar."), status);
+    assertEquals(Result.fail("Destroy todo 42 failed. Foobar."), status);
   }
 
   @Test
@@ -152,7 +152,7 @@ public class TodosServiceTest {
 
     var status = service.clearCompleted();
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "foo", false)), repository.load());
   }
 
@@ -162,7 +162,7 @@ public class TodosServiceTest {
 
     var status = service.clearCompleted();
 
-    assertEquals(new Failure("Clear completed failed. Foobar."), status);
+    assertEquals(Result.fail("Clear completed failed. Foobar."), status);
   }
 
   @Test
@@ -171,7 +171,7 @@ public class TodosServiceTest {
 
     var status = service.saveTodo(1, "bar");
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "bar", false)), repository.load());
   }
 
@@ -181,7 +181,7 @@ public class TodosServiceTest {
 
     var status = service.saveTodo(1, "  bar ");
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(new Todo(1, "bar", false)), repository.load());
   }
 
@@ -191,7 +191,7 @@ public class TodosServiceTest {
 
     var status = service.saveTodo(1, "   ");
 
-    assertEquals(new Success(), status);
+    assertEquals(Result.ok(), status);
     assertEquals(List.of(), repository.load());
   }
 
@@ -201,7 +201,7 @@ public class TodosServiceTest {
 
     var status = service.saveTodo(42, "bar");
 
-    assertEquals(new Failure("Save todo 42 with title \"bar\" failed. Foobar."), status);
+    assertEquals(Result.fail("Save todo 42 with title \"bar\" failed. Foobar."), status);
   }
 
   @Test

@@ -13,22 +13,29 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public CommandStatus addTodo(String title) {
-    try {
-      title = title.trim();
-      if (title.isEmpty()) {
-        return new Success();
-      }
+  public Result addTodo(String title) {
+    return validateTitle(title, this::doAddTodo, this::doNothing);
+  }
 
+  private Result doAddTodo(String title) {
+    try {
       var todos = this.todos.load();
       todos = doAddTodo(todos, title);
       this.todos.store(todos);
-      return new Success();
+      return Result.ok();
     } catch (TodosException e) {
-      String errorMessage = "Add todo \"" + title + "\" failed.";
-      logger.log(Level.WARNING, errorMessage, e);
-      return new Failure(errorMessage, e);
+      return handleError("Add todo \"" + title + "\" failed.", e);
     }
+  }
+
+  private Result doNothing() {
+    return Result.ok();
+  }
+
+  private Result handleError(String errorMessage, TodosException e) {
+    logger.log(Level.WARNING, errorMessage, e);
+    String summarize = Exceptions.summarize(errorMessage, e);
+    return Result.fail(summarize);
   }
 
   private static List<Todo> doAddTodo(List<Todo> todos, String title) {
@@ -39,16 +46,14 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public CommandStatus toggleTodo(int id) {
+  public Result toggleTodo(int id) {
     try {
       var todos = this.todos.load();
       todos = doToggle(todos, id);
       this.todos.store(todos);
-      return new Success();
+      return Result.ok();
     } catch (TodosException e) {
-      String errorMessage = "Toggle todo " + id + " failed.";
-      logger.log(Level.WARNING, errorMessage, e);
-      return new Failure(errorMessage, e);
+      return handleError("Toggle todo " + id + " failed.", e);
     }
   }
 
@@ -59,16 +64,14 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public CommandStatus toggleAll(boolean checked) {
+  public Result toggleAll(boolean checked) {
     try {
       var todos = this.todos.load();
       todos = doToggleAll(todos, checked);
       this.todos.store(todos);
-      return new Success();
+      return Result.ok();
     } catch (TodosException e) {
-      String errorMessage = "Toggle all to " + checked + " failed.";
-      logger.log(Level.WARNING, errorMessage, e);
-      return new Failure(errorMessage, e);
+      return handleError("Toggle all to " + checked + " failed.", e);
     }
   }
 
@@ -77,16 +80,14 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public CommandStatus destroyTodo(int id) {
+  public Result destroyTodo(int id) {
     try {
       var todos = this.todos.load();
       todos = doDestroy(todos, id);
       this.todos.store(todos);
-      return new Success();
+      return Result.ok();
     } catch (TodosException e) {
-      String errorMessage = "Destroy todo " + id + " failed.";
-      logger.log(Level.WARNING, errorMessage, e);
-      return new Failure(errorMessage, e);
+      return handleError("Destroy todo " + id + " failed.", e);
     }
   }
 
@@ -95,16 +96,14 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public CommandStatus clearCompleted() {
+  public Result clearCompleted() {
     try {
       var todos = this.todos.load();
       todos = doClearCompleted(todos);
       this.todos.store(todos);
-      return new Success();
+      return Result.ok();
     } catch (TodosException e) {
-      String errorMessage = "Clear completed failed.";
-      logger.log(Level.WARNING, errorMessage, e);
-      return new Failure(errorMessage, e);
+      return handleError("Clear completed failed.", e);
     }
   }
 
@@ -113,25 +112,22 @@ public class TodosServiceImpl implements TodosService {
   }
 
   @Override
-  public CommandStatus saveTodo(int id, String title) {
+  public Result saveTodo(int id, String title) {
+    return validateTitle(title, t -> doSaveTodo(id, t), () -> destroyTodo(id));
+  }
+
+  private Result doSaveTodo(int id, String title) {
     try {
       var todos = this.todos.load();
-      title = title.trim();
-      if (title.isEmpty()) {
-        todos = doDestroy(todos, id);
-      } else {
-        todos = doSave(todos, id, title);
-      }
+      todos = doSaveTodo(todos, id, title);
       this.todos.store(todos);
-      return new Success();
+      return Result.ok();
     } catch (TodosException e) {
-      String errorMessage = "Save todo " + id + " with title \"" + title + "\" failed.";
-      logger.log(Level.WARNING, errorMessage, e);
-      return new Failure(errorMessage, e);
+      return handleError("Save todo " + id + " with title \"" + title + "\" failed.", e);
     }
   }
 
-  private static List<Todo> doSave(List<Todo> todos, int id, String title) {
+  private static List<Todo> doSaveTodo(List<Todo> todos, int id, String title) {
     return todos.stream()
         .map(t -> t.id() != id ? t : new Todo(t.id(), title, t.completed()))
         .toList();
@@ -144,6 +140,14 @@ public class TodosServiceImpl implements TodosService {
     } catch (TodosException e) {
       logger.log(Level.WARNING, "Select todos failed.", e);
       return List.of();
+    }
+  }
+
+  <T> T validateTitle(String title, Function<String, T> onValid, Supplier<T> onInvalid) {
+    if (title.isBlank()) {
+      return onInvalid.get();
+    } else {
+      return onValid.apply(title.trim());
     }
   }
 }

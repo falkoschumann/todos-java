@@ -3,17 +3,17 @@ package de.muspellheim.todos.domain;
 import java.util.*;
 
 public interface TodosService {
-  CommandStatus addTodo(String title);
+  Result addTodo(String title);
 
-  CommandStatus toggleTodo(int id);
+  Result toggleTodo(int id);
 
-  CommandStatus toggleAll(boolean checked);
+  Result toggleAll(boolean checked);
 
-  CommandStatus destroyTodo(int id);
+  Result destroyTodo(int id);
 
-  CommandStatus clearCompleted();
+  Result clearCompleted();
 
-  CommandStatus saveTodo(int id, String title);
+  Result saveTodo(int id, String title);
 
   List<Todo> selectTodos();
 }
